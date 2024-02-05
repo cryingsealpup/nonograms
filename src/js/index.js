@@ -3,20 +3,21 @@ import { Nonogram } from "./utils"
 
 window.addEventListener('contextmenu', e => { e.preventDefault() }, false) // do not show context menu on RMC
 
-let dim = 5 
+let dim = 5
 const canvas = document.createElement('canvas'),
 	body = document.querySelector('body'),
-	ctx = canvas.getContext("2d")
+	reset = document.createElement('button'),
+	solve = document.createElement('button')
 
-ctx.strokeStyle = "black"
-ctx.lineWidth = 2
-canvas.width = canvas.height = '450'
+canvas.width = canvas.height = '470'
 canvas.textContent = 'Извините, ваш браузер не поддерживает "canvas" элемент.'
-body.appendChild(canvas)
+reset.textContent = 'Reset'
+solve.textContent = 'Solve'
+body.append(canvas, reset, solve)
 
-const grid = new Nonogram(canvas)
-grid.generateGrid(dim)
-grid.getHintsValues()
-grid.clearGrid()
-grid.update()
-console.log(grid.hints)
+const nonogram = new Nonogram(canvas, dim)
+nonogram.play()
+
+solve.addEventListener('click', () => { nonogram.solve() })
+reset.addEventListener('click', () => { nonogram.reset(true) })
+
